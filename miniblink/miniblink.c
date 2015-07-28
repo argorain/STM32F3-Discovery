@@ -19,18 +19,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include "gpio.h"
 
-static void gpio_setup(void)
-{
-	/* Enable GPIOE clock. */
-	rcc_periph_clock_enable(RCC_GPIOE);
+// static void gpio_setup(void)
+// {
+// 	/* Enable GPIOE clock. */
+// 	rcc_periph_clock_enable(RCC_GPIOE);
 
-	/* Set GPIO12 (in GPIO port E) to 'output push-pull'. */
-	gpio_mode_setup(GPIOE, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO12);
-}
+// 	/* Set GPIO12 (in GPIO port E) to 'output push-pull'. */
+// 	gpio_mode_setup(GPIOE, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO12);
+// }
 
 int main(void)
 {
