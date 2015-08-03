@@ -1,6 +1,7 @@
 # COMPILERS
 CC = arm-none-eabi-gcc
 CXX = arm-none-eabi-g++
+AS = arm-none-eabi-as
 LD = arm-none-eabi-gcc
 
 # OPENCM3 LIBRARY 
@@ -10,6 +11,9 @@ DEFS		= -DSTM32F3
 LIBNAME		= opencm3_stm32f3
 INCLUDE_DIR	= $(OPENCM3_DIR)/include
 LIB_DIR		= $(OPENCM3_DIR)/lib
+
+# DEBUG FLAGS
+DEBUG = -DDEBUG
 
 # BUILD FLAGS
 FP_FLAGS	?= -mfloat-abi=hard -mfpu=fpv4-sp-d16
@@ -27,6 +31,10 @@ CXXFLAGS	+= -fno-common -ffunction-sections -fdata-sections
 CPPFLAGS	+= -MD
 CPPFLAGS	+= -Wall -Wundef
 CPPFLAGS	+= $(DEFS) -I$(INCLUDE_DIR)
+CPPFLAGS    += $(DEBUG)
+
+ASFLAGS     += -MD -Wall
+ASFLAGS     += -I$(INCLUDE_DIR)
 
 LDFLAGS		+= --static -nostartfiles
 LDFLAGS		+= -L$(LIB_DIR)
@@ -36,7 +44,7 @@ LDFLAGS		+= -Wl,--gc-sections
 LDFLAGS		+= -specs=nano.specs -specs=nosys.specs
 
 LDLIBS		+= -l$(LIBNAME)
-#LDLIBS		+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+LDLIBS		+= -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
 
 # BUILD RULES
 %.o: %.c
@@ -44,6 +52,9 @@ LDLIBS		+= -l$(LIBNAME)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(ARCH_FLAGS) -o $(*).o -c $(*).cpp
+
+%.o: %.s
+	$(AS) $(ASFLAGS) $(ARCH_FLAGS) -o $(*).o -c $(*).s
 
 # PROJECT DEFINES
 BINARY = system
@@ -56,7 +67,7 @@ all: $(BINARY).elf
 $(OBJS): $(SOURCE)
 
 $(BINARY).elf: $(OBJS) $(HEADERS)
-	$(LD) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) $(OBJS) $(LIB_DIR)/lib$(LIBNAME).a -o $(BINARY).elf $(ARCH_FLAGS) 
+	$(LD) $(CPPFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(BINARY).elf $(ARCH_FLAGS) 
 
 clean:
 	$(RM) *.o *.d *.elf *.bin *.hex *.srec *.list *.map

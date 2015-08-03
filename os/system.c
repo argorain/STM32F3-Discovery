@@ -9,9 +9,7 @@
 #include "timer.h"
 #include "system.h"
 
-
-
-void init(void){
+void init_mcu(void){
 	__disable_irq();
 
 	rcc_clock_setup_hsi(&hsi_8mhz[CLOCK_64MHZ]);

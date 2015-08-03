@@ -10,24 +10,14 @@
 
 
 int main(void){
-	int i;
+	init_mcu();
 
-	init();
-
-	/* Blink the LED (PC8) on the board. */
 	while (1) {
-		/* Using API function gpio_toggle(): */
-		gpio_toggle(GPIOE, GPIO8);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO9);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO10);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO11);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO12);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO13);	/* LED on/off */
-		gpio_toggle(GPIOE, GPIO14);	/* LED on/off */
-		//gpio_toggle(GPIOE, GPIO15);	/* LED on/off */
-		for (i = 0; i < 2000000; i++) /* Wait a bit. */
-			__asm__("nop");
-
+#ifndef DEBUG
+		__WFI();
+#else
+		__asm__("nop");
+#endif
 	}
 
 	return 0;
