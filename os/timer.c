@@ -21,39 +21,39 @@ void init_timer(void){
 }
 
 static int counter=0;
-#define BASE 500
+#define BASE 1000
 
 void tim3_isr(void){
 	timer_clear_flag(TIM3, TIM_SR_UIF);
 	// TIM3->SR &= ~TIM_SR_UIF; // clear UIF flag
 	//LED_BLUE_GPIO->ODR ^= (1 << LED_BLUE_PIN); // toggle LED state
 	//while(1){
-	if(counter>BASE){
+	if(counter==BASE){
 		gpio_toggle(GPIOE, GPIO15);
 	}
-	if(counter>BASE*2){
+	if(counter==BASE*2){
 		gpio_toggle(GPIOE, GPIO14);
 	}
-	if(counter>BASE*3){
+	if(counter==BASE*3){
 		gpio_toggle(GPIOE, GPIO13);
 	}
-	if(counter>BASE*4){
+	if(counter==BASE*4){
 		gpio_toggle(GPIOE, GPIO12);
 	}
-	if(counter>BASE*5){
+	if(counter==BASE*5){
 		gpio_toggle(GPIOE, GPIO11);
 	}
-	if(counter>BASE*6){
+	if(counter==BASE*6){
 		gpio_toggle(GPIOE, GPIO10);
 	}
-	if(counter>BASE*7){
+	if(counter==BASE*7){
 		gpio_toggle(GPIOE, GPIO9);
 	}
-	if(counter>BASE*7){
+	if(counter==BASE*8){
 		gpio_toggle(GPIOE, GPIO8);
 		counter=0;
 	}
-	if(counter>BASE*8){
+	if(counter==BASE*9){
 		counter=0;
 	}
 	counter++;
